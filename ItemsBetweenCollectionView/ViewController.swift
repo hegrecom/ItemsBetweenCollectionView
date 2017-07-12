@@ -66,7 +66,11 @@ extension ViewController:UICollectionViewDelegate {
         let point = gesture.location(in: gesture.view)
         switch gesture.state{
         case .began:
-            guard let indexPath = collectionViewA.indexPathForItem(at: point) else {return}
+            guard let indexPath = collectionViewA.indexPathForItem(at: point) else {
+                gesture.isEnabled = false
+                gesture.isEnabled = true
+                return
+            }
             movingCellIndexPath = indexPath
             movingCellFrom = .A
             let cell = collectionViewA.cellForItem(at: indexPath)
@@ -123,7 +127,9 @@ extension ViewController:UICollectionViewDelegate {
                 }
             }
         case .ended:
+            print("ended")
             movingCellImageView.removeFromSuperview()
+            movingCellImageView = nil
             if movingCellFrom == .A {
                 let cell = collectionViewA.cellForItem(at: movingCellIndexPath)
                 cell?.alpha = 1.0
@@ -132,14 +138,7 @@ extension ViewController:UICollectionViewDelegate {
                 cell?.alpha = 1.0
             }
         default:
-            movingCellImageView.removeFromSuperview()
-            if movingCellFrom == .A {
-                let cell = collectionViewA.cellForItem(at: movingCellIndexPath)
-                cell?.alpha = 1.0
-            } else {
-                let cell = collectionViewB.cellForItem(at: movingCellIndexPath)
-                cell?.alpha = 1.0
-            }
+            break
         }
     }
     
@@ -147,7 +146,12 @@ extension ViewController:UICollectionViewDelegate {
         let point = gesture.location(in: gesture.view)
         switch gesture.state{
         case .began:
-            guard let indexPath = collectionViewB.indexPathForItem(at: point) else {return}
+            print("began")
+            guard let indexPath = collectionViewB.indexPathForItem(at: point) else {
+                gesture.isEnabled = false
+                gesture.isEnabled = true
+                return
+            }
             movingCellIndexPath = indexPath
             movingCellFrom = .B
             let cell = collectionViewB.cellForItem(at: indexPath)
@@ -159,11 +163,11 @@ extension ViewController:UICollectionViewDelegate {
             self.view.addSubview(movingCellImageView)
             cell?.alpha = 0.0
         case .changed:
+            print("changed")
             let pointInView = self.view.convert(point, from: collectionViewB)
             movingCellImageView.frame = CGRect(origin: CGPoint(x:pointInView.x-movingCellTappedPoint.x ,y:pointInView.y-movingCellTappedPoint.y), size: movingCellImageView.frame.size)
             if collectionViewB.frame.contains(pointInView) {
                 let destIndexPath = collectionViewB.indexPathForItem(at: point)
-                
                 if destIndexPath != nil {
                     if movingCellFrom == .B {
                         dataB.insert(dataB.remove(at: movingCellIndexPath.row), at: destIndexPath!.row)
@@ -193,7 +197,7 @@ extension ViewController:UICollectionViewDelegate {
                         collectionViewA.insertItems(at: [destIndexPath!])
                         movingCellIndexPath = destIndexPath
                         movingCellFrom = .A
-                        let cell = collectionViewB.cellForItem(at: movingCellIndexPath)
+                        let cell = collectionViewA.cellForItem(at: movingCellIndexPath)
                         cell?.alpha = 0.0
                     } else {
                         dataA.insert(dataA.remove(at: movingCellIndexPath.row), at: destIndexPath!.row)
@@ -205,7 +209,9 @@ extension ViewController:UICollectionViewDelegate {
                 }
             }
         case .ended:
+            print("ended")
             movingCellImageView.removeFromSuperview()
+            movingCellImageView = nil
             if movingCellFrom == .B {
                 let cell = collectionViewB.cellForItem(at: movingCellIndexPath)
                 cell?.alpha = 1.0
@@ -214,14 +220,7 @@ extension ViewController:UICollectionViewDelegate {
                 cell?.alpha = 1.0
             }
         default:
-            movingCellImageView.removeFromSuperview()
-            if movingCellFrom == .B {
-                let cell = collectionViewB.cellForItem(at: movingCellIndexPath)
-                cell?.alpha = 1.0
-            } else {
-                let cell = collectionViewA.cellForItem(at: movingCellIndexPath)
-                cell?.alpha = 1.0
-            }
+            break
         }
     }
     
@@ -230,7 +229,7 @@ extension ViewController:UICollectionViewDelegate {
             return nil
         }
         UIGraphicsBeginImageContextWithOptions(cell!.frame.size, true, 0)
-        cell!.drawHierarchy(in: cell!.bounds, afterScreenUpdates: true)
+        cell!.drawHierarchy(in: cell!.bounds, afterScreenUpdates: false)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         let imageView = UIImageView(image: image)
