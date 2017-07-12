@@ -103,6 +103,25 @@ extension ViewController:UICollectionViewDelegate {
                         let cell = collectionViewA.cellForItem(at: movingCellIndexPath)
                         cell?.alpha = 0.0
                     }
+                } else {
+                    if movingCellFrom == .A {
+                        let destIndexPath = IndexPath(row: dataA.count-1, section: 0)
+                        dataA.insert(dataA.remove(at: movingCellIndexPath.row), at: destIndexPath.row)
+                        collectionViewA.moveItem(at: movingCellIndexPath, to: destIndexPath)
+                        movingCellIndexPath = destIndexPath
+                        let cell = collectionViewA.cellForItem(at: movingCellIndexPath)
+                        cell?.alpha = 0.0
+                    } else {
+                        let destIndexPath = IndexPath(row: dataA.count, section: 0)
+                        let data = dataB.remove(at: movingCellIndexPath.row)
+                        collectionViewB.deleteItems(at: [movingCellIndexPath])
+                        dataA.insert(data, at: destIndexPath.row)
+                        collectionViewA.insertItems(at: [destIndexPath])
+                        movingCellIndexPath = destIndexPath
+                        movingCellFrom = .A
+                        let cell = collectionViewA.cellForItem(at: movingCellIndexPath)
+                        cell?.alpha = 0.0
+                    }
                 }
             } else if collectionViewB.frame.contains(pointInView) {
                 let pointInB = collectionViewA.convert(point, to: collectionViewB)
@@ -120,6 +139,25 @@ extension ViewController:UICollectionViewDelegate {
                     } else {
                         dataB.insert(dataB.remove(at: movingCellIndexPath.row), at: destIndexPath!.row)
                         collectionViewB.moveItem(at: movingCellIndexPath, to: destIndexPath!)
+                        movingCellIndexPath = destIndexPath
+                        let cell = collectionViewB.cellForItem(at: movingCellIndexPath)
+                        cell?.alpha = 0.0
+                    }
+                } else {
+                    if movingCellFrom == .A {
+                        let destIndexPath = IndexPath(row: dataB.count, section: 0)
+                        let data = dataA.remove(at: movingCellIndexPath.row)
+                        collectionViewA.deleteItems(at: [movingCellIndexPath])
+                        dataB.insert(data, at: destIndexPath.row)
+                        collectionViewB.insertItems(at: [destIndexPath])
+                        movingCellIndexPath = destIndexPath
+                        movingCellFrom = .B
+                        let cell = collectionViewB.cellForItem(at: movingCellIndexPath)
+                        cell?.alpha = 0.0
+                    } else {
+                        let destIndexPath = IndexPath(row: dataB.count-1, section: 0)
+                        dataB.insert(dataB.remove(at: movingCellIndexPath.row), at: destIndexPath.row)
+                        collectionViewB.moveItem(at: movingCellIndexPath, to: destIndexPath)
                         movingCellIndexPath = destIndexPath
                         let cell = collectionViewB.cellForItem(at: movingCellIndexPath)
                         cell?.alpha = 0.0
@@ -185,6 +223,25 @@ extension ViewController:UICollectionViewDelegate {
                         let cell = collectionViewB.cellForItem(at: movingCellIndexPath)
                         cell?.alpha = 0.0
                     }
+                } else {
+                    if movingCellFrom == .B {
+                        let destIndexPath = IndexPath(row: dataB.count-1, section: 0)
+                        dataB.insert(dataB.remove(at: movingCellIndexPath.row), at: destIndexPath.row)
+                        collectionViewB.moveItem(at: movingCellIndexPath, to: destIndexPath)
+                        movingCellIndexPath = destIndexPath
+                        let cell = collectionViewB.cellForItem(at: movingCellIndexPath)
+                        cell?.alpha = 0.0
+                    } else {
+                        let destIndexPath = IndexPath(row: dataB.count, section: 0)
+                        let data = dataA.remove(at: movingCellIndexPath.row)
+                        collectionViewA.deleteItems(at: [movingCellIndexPath])
+                        dataB.insert(data, at: destIndexPath.row)
+                        collectionViewB.insertItems(at: [destIndexPath])
+                        movingCellIndexPath = destIndexPath
+                        movingCellFrom = .B
+                        let cell = collectionViewB.cellForItem(at: movingCellIndexPath)
+                        cell?.alpha = 0.0
+                    }
                 }
             } else if collectionViewA.frame.contains(pointInView) {
                 let pointInA = collectionViewB.convert(point, to: collectionViewA)
@@ -202,6 +259,25 @@ extension ViewController:UICollectionViewDelegate {
                     } else {
                         dataA.insert(dataA.remove(at: movingCellIndexPath.row), at: destIndexPath!.row)
                         collectionViewA.moveItem(at: movingCellIndexPath, to: destIndexPath!)
+                        movingCellIndexPath = destIndexPath
+                        let cell = collectionViewA.cellForItem(at: movingCellIndexPath)
+                        cell?.alpha = 0.0
+                    }
+                } else {
+                    if movingCellFrom == .B {
+                        let destIndexPath = IndexPath(row: dataA.count, section: 0)
+                        let data = dataB.remove(at: movingCellIndexPath.row)
+                        collectionViewB.deleteItems(at: [movingCellIndexPath])
+                        dataA.insert(data, at: destIndexPath.row)
+                        collectionViewA.insertItems(at: [destIndexPath])
+                        movingCellIndexPath = destIndexPath
+                        movingCellFrom = .A
+                        let cell = collectionViewA.cellForItem(at: movingCellIndexPath)
+                        cell?.alpha = 0.0
+                    } else {
+                        let destIndexPath = IndexPath(row: dataA.count-1, section: 0)
+                        dataA.insert(dataA.remove(at: movingCellIndexPath.row), at: destIndexPath.row)
+                        collectionViewA.moveItem(at: movingCellIndexPath, to: destIndexPath)
                         movingCellIndexPath = destIndexPath
                         let cell = collectionViewA.cellForItem(at: movingCellIndexPath)
                         cell?.alpha = 0.0
