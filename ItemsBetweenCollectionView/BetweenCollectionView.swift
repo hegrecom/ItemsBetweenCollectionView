@@ -51,16 +51,10 @@ class BetweenCollectionView: UICollectionView {
             movingCellIndexPath = indexPath
             movingCellFrom = self
             let cell = self.cellForItem(at: indexPath)
-            movingCellImageView = captureCells(cell: cell)!
-            movingCellImageView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-            let pointInView = superview!.convert(point, from: self)
-            movingCellTappedPoint = cell?.convert(point, from: self)
-            movingCellImageView.frame = CGRect(origin: CGPoint(x:pointInView.x-movingCellTappedPoint.x, y:pointInView.y-movingCellTappedPoint.y), size: movingCellImageView.frame.size)
-            superview!.addSubview(movingCellImageView)
-            cell?.alpha = 0.0
+            animatePickingUpCell(cell: cell!, point: point)
         case .changed:
             let pointInView = superview!.convert(point, from: self)
-            movingCellImageView.frame = CGRect(origin: CGPoint(x:pointInView.x-movingCellTappedPoint.x ,y:pointInView.y-movingCellTappedPoint.y), size: movingCellImageView.frame.size)
+            movingCellImageView.frame = CGRect(origin: CGPoint(x:pointInView.x-movingCellTappedPoint.x*1.3 ,y:pointInView.y-movingCellTappedPoint.y*1.3), size: movingCellImageView.frame.size)
             if self.frame.contains(pointInView) {
                 let destIndexPath = self.indexPathForItem(at: point)
                 if destIndexPath != nil {
@@ -98,16 +92,13 @@ class BetweenCollectionView: UICollectionView {
                 }
             }
         case .ended:
-            print("ended")
-            movingCellImageView.removeFromSuperview()
-            movingCellImageView = nil
+            var cell : UICollectionViewCell!
             if movingCellFrom == self {
-                let cell = self.cellForItem(at: movingCellIndexPath)
-                cell?.alpha = 1.0
+                cell = self.cellForItem(at: movingCellIndexPath)
             } else {
-                let cell = pairCollectionView.cellForItem(at: movingCellIndexPath)
-                cell?.alpha = 1.0
+                cell = pairCollectionView.cellForItem(at: movingCellIndexPath)
             }
+            animatePuttingDownCells(cell: cell, collectionView:movingCellFrom)
         default:
             break
         }
@@ -133,6 +124,41 @@ class BetweenCollectionView: UICollectionView {
         movingCellFrom = destCollectionView
         let cell = destCollectionView.cellForItem(at: movingCellIndexPath)
         cell?.alpha = 0.0
+    }
+    
+    func animatePickingUpCell(cell: UICollectionViewCell, point: CGPoint) {
+        movingCellImageView = captureCells(cell: cell)!
+        let pointInView = superview!.convert(point, from: self)
+        movingCellTappedPoint = cell.convert(point, from: self)
+        movingCellImageView.frame = CGRect(origin: CGPoint(x:pointInView.x-movingCellTappedPoint.x, y:pointInView.y-movingCellTappedPoint.y), size: movingCellImageView.frame.size)
+        superview!.addSubview(movingCellImageView)
+        cell.alpha = 0.0
+        
+        UIView.animateKeyframes(withDuration: 0.2, delay: 0, options: .calculationModeCubic, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 4/5, animations: {
+                self.movingCellImageView.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+            })
+            UIView.addKeyframe(withRelativeStartTime: 4/5, relativeDuration: 1/5, animations: {
+                self.movingCellImageView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            })
+        }, completion: nil)
+    }
+    
+    func animatePuttingDownCells(cell: UICollectionViewCell?, collectionView: BetweenCollectionView){
+        var cellFrameInSuperView:CGRect?
+        if cell == nil {
+            cellFrameInSuperView = self.superview?.convert(CGRect(x:collectionView.contentSize.width, y:collectionView.contentSize.height, width:movingCellImageView.frame.width, height:movingCellImageView.frame.height), from: collectionView)
+        } else {
+            cellFrameInSuperView = self.superview?.convert((cell?.frame)!, from: collectionView)
+        }
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+            self.movingCellImageView.frame = cellFrameInSuperView!
+            self.movingCellImageView.transform = CGAffineTransform.identity
+        }) { (finished) in
+            self.movingCellImageView.removeFromSuperview()
+            self.movingCellImageView = nil
+            cell?.alpha = 1.0
+        }
     }
     
     func captureCells(cell: UICollectionViewCell?) -> UIImageView? {
