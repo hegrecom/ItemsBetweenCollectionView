@@ -8,8 +8,10 @@
 
 import UIKit
 
-protocol BetweenCollectionViewDelegate: class {
+@objc protocol BetweenCollectionViewDelegate: class {
     func betweenCollectionView(collectionView: BetweenCollectionView, syncDataSource: [Any])
+    @objc optional func betweenCollectionView(collectionView: BetweenCollectionView, didStartMoving itemAt:IndexPath)
+    @objc optional func betweenCollectionView(collectionView: BetweenCollectionView, didEndMoving itemAt:IndexPath)
 }
 
 class BetweenCollectionView: UICollectionView {
@@ -52,6 +54,7 @@ class BetweenCollectionView: UICollectionView {
             movingCellFrom = self
             let cell = self.cellForItem(at: indexPath)
             animatePickingUpCell(cell: cell!, point: point)
+            betweenCollectionViewDelegate?.betweenCollectionView?(collectionView: self, didStartMoving: indexPath)
         case .changed:
             let pointInView = superview!.convert(point, from: self)
             movingCellImageView.frame = CGRect(origin: CGPoint(x:pointInView.x-movingCellTappedPoint.x*1.3 ,y:pointInView.y-movingCellTappedPoint.y*1.3), size: movingCellImageView.frame.size)
@@ -99,6 +102,7 @@ class BetweenCollectionView: UICollectionView {
                 cell = pairCollectionView.cellForItem(at: movingCellIndexPath)
             }
             animatePuttingDownCells(cell: cell, collectionView:movingCellFrom)
+            betweenCollectionViewDelegate?.betweenCollectionView?(collectionView: movingCellFrom, didEndMoving: movingCellIndexPath)
         default:
             break
         }
