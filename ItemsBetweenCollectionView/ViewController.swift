@@ -24,6 +24,7 @@ class CollectionViewCell: UICollectionViewCell {
         label.frame = self.bounds
         label.textAlignment = .center
         self.contentView.addSubview(label)
+        layer.cornerRadius = 3.0
     }
 }
 
@@ -92,6 +93,16 @@ extension ViewController:BetweenCollectionViewDelegate {
         } else {
             dataB = syncDataSource as! [Int]
         }
+    }
+    
+    func betweenCollectionView(collectionView: BetweenCollectionView, didStartMoving itemAt: IndexPath) {
+        collectionViewA.startWiggling()
+        collectionViewB.startWiggling()
+    }
+    
+    func betweenCollectionView(collectionView: BetweenCollectionView, didEndMoving itemAt: IndexPath) {
+        collectionViewA.stopWiggling()
+        collectionViewB.stopWiggling()
     }
 }
 

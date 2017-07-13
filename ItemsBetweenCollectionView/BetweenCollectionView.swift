@@ -165,6 +165,37 @@ class BetweenCollectionView: UICollectionView {
         }
     }
     
+    func startWiggling(){
+        let cells = self.visibleCells
+        for cell in cells {
+            guard cell.layer.animation(forKey: "wiggle") == nil else {return}
+            guard cell.layer.animation(forKey: "bounce") == nil else {return}
+            
+            let angle = 0.04
+            
+            let wiggle = CAKeyframeAnimation(keyPath: "transform.rotation.z")
+            wiggle.values = [-angle, angle]
+            wiggle.autoreverses = true
+            wiggle.duration = randomInterval(0.1, variance: 0.025)
+            wiggle.repeatCount = Float.infinity
+            cell.layer.add(wiggle, forKey: "wiggle")
+            
+            let bounce = CAKeyframeAnimation(keyPath: "transform.translation.y")
+            bounce.values = [4.0, 0.0]
+            bounce.autoreverses = true
+            bounce.duration = randomInterval(0.12, variance: 0.025)
+            bounce.repeatCount = Float.infinity
+            cell.layer.add(bounce, forKey: "bounce")
+        }
+    }
+    
+    func stopWiggling(){
+        let cells = self.visibleCells
+        for cell in cells {
+            cell.layer.removeAllAnimations()
+        }
+    }
+    
     func captureCells(cell: UICollectionViewCell?) -> UIImageView? {
         guard cell != nil else {
             return nil
@@ -179,4 +210,9 @@ class BetweenCollectionView: UICollectionView {
         
         return imageView
     }
+    
+    func randomInterval(_ interval: TimeInterval, variance: Double) -> TimeInterval {
+        return interval + variance * Double((Double(arc4random_uniform(1000)) - 500.0) / 500.0)
+    }
+ 
 }
