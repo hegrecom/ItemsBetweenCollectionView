@@ -12,6 +12,7 @@
 		B449F27E1F14B88700A234CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B449F27C1F14B88700A234CC /* Main.storyboard */; };
 		B449F2801F14B88700A234CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B449F27F1F14B88700A234CC /* Assets.xcassets */; };
 		B449F2831F14B88700A234CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B449F2811F14B88700A234CC /* LaunchScreen.storyboard */; };
+		B449F28B1F15EE0B00A234CC /* BetweenCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B449F28A1F15EE0B00A234CC /* BetweenCollectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		B449F27F1F14B88700A234CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B449F2821F14B88700A234CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B449F2841F14B88700A234CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B449F28A1F15EE0B00A234CC /* BetweenCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetweenCollectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			children = (
 				B449F2781F14B88700A234CC /* AppDelegate.swift */,
 				B449F27A1F14B88700A234CC /* ViewController.swift */,
+				B449F28A1F15EE0B00A234CC /* BetweenCollectionView.swift */,
 				B449F27C1F14B88700A234CC /* Main.storyboard */,
 				B449F27F1F14B88700A234CC /* Assets.xcassets */,
 				B449F2811F14B88700A234CC /* LaunchScreen.storyboard */,
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B449F28B1F15EE0B00A234CC /* BetweenCollectionView.swift in Sources */,
 				B449F27B1F14B88700A234CC /* ViewController.swift in Sources */,
 				B449F2791F14B88700A234CC /* AppDelegate.swift in Sources */,
 			);
@@ -302,6 +306,7 @@
 				B449F2891F14B88700A234CC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
