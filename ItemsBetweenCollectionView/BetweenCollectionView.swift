@@ -65,45 +65,17 @@ class BetweenCollectionView: UICollectionView {
                 let destIndexPath = self.indexPathForItem(at: point)
                 if destIndexPath != nil {
                     if movingCellFrom == self {
-                        collectionViewDataSource.insert(collectionViewDataSource.remove(at: movingCellIndexPath.row), at: destIndexPath!.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: self, syncDataSource: collectionViewDataSource)
-                        self.moveItem(at: movingCellIndexPath, to: destIndexPath!)
-                        movingCellIndexPath = destIndexPath
-                        let cell = self.cellForItem(at: movingCellIndexPath)
-                        cell?.alpha = 0.0
+                        moveCellInsideOfCollectionView(collectionView: self, destIndexPath: destIndexPath!)
                     } else {
-                        let data = pairCollectionView.collectionViewDataSource.remove(at: movingCellIndexPath.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: pairCollectionView, syncDataSource: pairCollectionView.collectionViewDataSource)
-                        pairCollectionView.deleteItems(at: [movingCellIndexPath])
-                        collectionViewDataSource.insert(data, at: destIndexPath!.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: self, syncDataSource: collectionViewDataSource)
-                        self.insertItems(at: [destIndexPath!])
-                        movingCellIndexPath = destIndexPath
-                        movingCellFrom = self
-                        let cell = self.cellForItem(at: movingCellIndexPath)
-                        cell?.alpha = 0.0
+                        moveCellAcrossTheCollectionView(sourceCollectionView: pairCollectionView, destCollectionView: self, destIndexPath: destIndexPath!)
                     }
                 } else {
                     if movingCellFrom == self {
                         let destIndexPath = IndexPath(row: collectionViewDataSource.count-1, section: 0)
-                        collectionViewDataSource.insert(collectionViewDataSource.remove(at: movingCellIndexPath.row), at: destIndexPath.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: self, syncDataSource: collectionViewDataSource)
-                        self.moveItem(at: movingCellIndexPath, to: destIndexPath)
-                        movingCellIndexPath = destIndexPath
-                        let cell = self.cellForItem(at: movingCellIndexPath)
-                        cell?.alpha = 0.0
+                        moveCellInsideOfCollectionView(collectionView: self, destIndexPath: destIndexPath)
                     } else {
                         let destIndexPath = IndexPath(row: collectionViewDataSource.count, section: 0)
-                        let data = pairCollectionView.collectionViewDataSource.remove(at: movingCellIndexPath.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: pairCollectionView, syncDataSource: pairCollectionView.collectionViewDataSource)
-                        pairCollectionView.deleteItems(at: [movingCellIndexPath])
-                        collectionViewDataSource.insert(data, at: destIndexPath.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: self, syncDataSource: collectionViewDataSource)
-                        self.insertItems(at: [destIndexPath])
-                        movingCellIndexPath = destIndexPath
-                        movingCellFrom = self
-                        let cell = self.cellForItem(at: movingCellIndexPath)
-                        cell?.alpha = 0.0
+                        moveCellAcrossTheCollectionView(sourceCollectionView: pairCollectionView, destCollectionView: self, destIndexPath: destIndexPath)
                     }
                 }
             } else if pairCollectionView.frame.contains(pointInView) {
@@ -111,45 +83,17 @@ class BetweenCollectionView: UICollectionView {
                 let destIndexPath = pairCollectionView.indexPathForItem(at: pointInB)
                 if destIndexPath != nil {
                     if movingCellFrom == self {
-                        let data = collectionViewDataSource.remove(at: movingCellIndexPath.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: self, syncDataSource: collectionViewDataSource)
-                        self.deleteItems(at: [movingCellIndexPath])
-                        pairCollectionView.collectionViewDataSource.insert(data, at: destIndexPath!.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: pairCollectionView, syncDataSource: pairCollectionView.collectionViewDataSource)
-                        pairCollectionView.insertItems(at: [destIndexPath!])
-                        movingCellIndexPath = destIndexPath
-                        movingCellFrom = pairCollectionView
-                        let cell = pairCollectionView.cellForItem(at: movingCellIndexPath)
-                        cell?.alpha = 0.0
+                        moveCellAcrossTheCollectionView(sourceCollectionView: self, destCollectionView: pairCollectionView, destIndexPath: destIndexPath!)
                     } else {
-                        pairCollectionView.collectionViewDataSource.insert(pairCollectionView.collectionViewDataSource.remove(at: movingCellIndexPath.row), at: destIndexPath!.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: pairCollectionView, syncDataSource: pairCollectionView.collectionViewDataSource)
-                        pairCollectionView.moveItem(at: movingCellIndexPath, to: destIndexPath!)
-                        movingCellIndexPath = destIndexPath
-                        let cell = pairCollectionView.cellForItem(at: movingCellIndexPath)
-                        cell?.alpha = 0.0
+                        moveCellInsideOfCollectionView(collectionView: pairCollectionView, destIndexPath: destIndexPath!)
                     }
                 } else {
                     if movingCellFrom == self {
                         let destIndexPath = IndexPath(row: pairCollectionView.collectionViewDataSource.count, section: 0)
-                        let data = collectionViewDataSource.remove(at: movingCellIndexPath.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: self, syncDataSource: collectionViewDataSource)
-                        self.deleteItems(at: [movingCellIndexPath])
-                        pairCollectionView.collectionViewDataSource.insert(data, at: destIndexPath.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: pairCollectionView, syncDataSource: pairCollectionView.collectionViewDataSource)
-                        pairCollectionView.insertItems(at: [destIndexPath])
-                        movingCellIndexPath = destIndexPath
-                        movingCellFrom = pairCollectionView
-                        let cell = pairCollectionView.cellForItem(at: movingCellIndexPath)
-                        cell?.alpha = 0.0
+                        moveCellAcrossTheCollectionView(sourceCollectionView: self, destCollectionView: pairCollectionView, destIndexPath: destIndexPath)
                     } else {
                         let destIndexPath = IndexPath(row: pairCollectionView.collectionViewDataSource.count-1, section: 0)
-                        pairCollectionView.collectionViewDataSource.insert(pairCollectionView.collectionViewDataSource.remove(at: movingCellIndexPath.row), at: destIndexPath.row)
-                        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: pairCollectionView, syncDataSource: pairCollectionView.collectionViewDataSource)
-                        pairCollectionView.moveItem(at: movingCellIndexPath, to: destIndexPath)
-                        movingCellIndexPath = destIndexPath
-                        let cell = pairCollectionView.cellForItem(at: movingCellIndexPath)
-                        cell?.alpha = 0.0
+                        moveCellInsideOfCollectionView(collectionView: pairCollectionView, destIndexPath: destIndexPath)
                     }
                 }
             }
@@ -167,6 +111,28 @@ class BetweenCollectionView: UICollectionView {
         default:
             break
         }
+    }
+    
+    func moveCellInsideOfCollectionView(collectionView:BetweenCollectionView, destIndexPath: IndexPath){
+        collectionView.collectionViewDataSource.insert(collectionView.collectionViewDataSource.remove(at: movingCellIndexPath.row), at: destIndexPath.row)
+        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: collectionView, syncDataSource: collectionView.collectionViewDataSource)
+        collectionView.moveItem(at: movingCellIndexPath, to: destIndexPath)
+        movingCellIndexPath = destIndexPath
+        let cell = collectionView.cellForItem(at: movingCellIndexPath)
+        cell?.alpha = 0.0
+    }
+    
+    func moveCellAcrossTheCollectionView(sourceCollectionView:BetweenCollectionView, destCollectionView: BetweenCollectionView, destIndexPath: IndexPath) {
+        let data = sourceCollectionView.collectionViewDataSource.remove(at: movingCellIndexPath.row)
+        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: sourceCollectionView, syncDataSource: sourceCollectionView.collectionViewDataSource)
+        sourceCollectionView.deleteItems(at: [movingCellIndexPath])
+        destCollectionView.collectionViewDataSource.insert(data, at: destIndexPath.row)
+        betweenCollectionViewDelegate?.betweenCollectionView(collectionView: destCollectionView, syncDataSource: destCollectionView.collectionViewDataSource)
+        destCollectionView.insertItems(at: [destIndexPath])
+        movingCellIndexPath = destIndexPath
+        movingCellFrom = destCollectionView
+        let cell = destCollectionView.cellForItem(at: movingCellIndexPath)
+        cell?.alpha = 0.0
     }
     
     func captureCells(cell: UICollectionViewCell?) -> UIImageView? {
