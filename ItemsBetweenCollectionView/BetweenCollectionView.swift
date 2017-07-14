@@ -15,10 +15,21 @@ import UIKit
 }
 
 class BetweenCollectionView: UICollectionView {
+    var isMovingCellAllowed: Bool = true {
+        didSet {
+            if isMovingCellAllowed == true {
+                gestureRecognizerForMovingCells.isEnabled = true
+            } else {
+                gestureRecognizerForMovingCells.isEnabled = false
+            }
+        }
+    }
+    
     var movingCellIndexPath: IndexPath!
     var movingCellImageView: UIImageView!
     var movingCellTappedPoint: CGPoint!
     var movingCellFrom: BetweenCollectionView!
+    var gestureRecognizerForMovingCells: UILongPressGestureRecognizer!
     
     var collectionViewDataSource: [Any]!
     var pairCollectionView: BetweenCollectionView!
@@ -36,9 +47,9 @@ class BetweenCollectionView: UICollectionView {
     }
     
     func customInit() {
-        let longPressGestureForMovingCells = UILongPressGestureRecognizer(target: self, action: #selector(movingCell(_:)))
-        longPressGestureForMovingCells.minimumPressDuration = 0.15
-        self.addGestureRecognizer(longPressGestureForMovingCells)
+        gestureRecognizerForMovingCells = UILongPressGestureRecognizer(target: self, action: #selector(movingCell(_:)))
+        gestureRecognizerForMovingCells.minimumPressDuration = 0.15
+        self.addGestureRecognizer(gestureRecognizerForMovingCells)
     }
     
     func movingCell(_ gesture: UILongPressGestureRecognizer) {
